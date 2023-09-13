@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import PhonebookForm from './PhonebookForm/PhonebookForm';
 import { ContactsList } from './ContactsList/ContactsList';
@@ -17,29 +17,24 @@ let contact = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+const App = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  componentDidMount() {
-    this.setState({
-      contacts: localStorage.getItem('contact')
+  useEffect(() => {
+    setContacts(
+      localStorage.getItem('contact')
         ? JSON.parse(localStorage.getItem('contact'))
-        : contact,
-    });
-  }
+        : contact
+    );
+  }, []);
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState);
-    if (prevState.contacts.length !== this.state.contacts.length) {
-      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
-    }
-  }
+  useEffect(() => {
+    localStorage.setItem('contact', JSON.stringify(contacts));
+  }, [contacts]);
 
-  onSubmit = contact => {
-    const duplicate = this.state.contacts.find(
+  const onSubmit = contact => {
+    const duplicate = contacts.find(
       item => item.name.toLowerCase() === contact.name.toLowerCase()
     );
     if (duplicate) {
@@ -52,33 +47,24 @@ class App extends Component {
       id: nanoid(),
     };
 
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
-  };
+    setContacts(prevState => [...prevState.contacts, newContact]);
 
-  handleChange = value => {
-    this.setState({
-      filter: value,
-    });
-  };
+    const handleChange = value => {
+      setFilter(value);
+    };
 
-  getFilteredContacts = () => {
-    return this.state.contacts.filter(({ name }) =>
-      name.toLowerCase().includes(this.state.filter.toLowerCase())
-    );
-  };
+    const getFilteredContacts = () => {
+      return filter(({ name }) =>
+        name.toLowerCase().includes(filter.toLowerCase())
+      );
+    };
 
-  handleDeleteClick = deletedId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(({ id }) => id !== deletedId),
-    }));
-  };
+    const handleDeleteClick = deletedId => {
+      setContacts(prevState =>
+        prevState.contacts.filter(({ id }) => id !== deletedId)
+      );
+    };
 
-  render() {
-    const { onSubmit, getFilteredContacts, handleDeleteClick, handleChange } =
-      this;
-    const { filter } = this.state;
     return (
       <div
         style={{
@@ -104,7 +90,7 @@ class App extends Component {
         </ContactsContainer>
       </div>
     );
-  }
-}
+  };
+};
 
 export default App;
