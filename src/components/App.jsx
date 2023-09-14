@@ -47,50 +47,50 @@ const App = () => {
       id: nanoid(),
     };
 
-    setContacts(prevState => [...prevState.contacts, newContact]);
+    setContacts(contacts => [...contacts, newContact]);
+  };
 
-    const handleChange = value => {
-      setFilter(value);
-    };
+  const handleChange = value => {
+    setFilter(value);
+  };
 
-    const getFilteredContacts = () => {
-      return filter(({ name }) =>
-        name.toLowerCase().includes(filter.toLowerCase())
-      );
-    };
-
-    const handleDeleteClick = deletedId => {
-      setContacts(prevState =>
-        prevState.contacts.filter(({ id }) => id !== deletedId)
-      );
-    };
-
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          marginLeft: 20,
-          fontSize: 30,
-          color: '#010101',
-        }}
-      >
-        <PhonebookContainer>
-          <PhonebookTitle>Phonebook</PhonebookTitle>
-          <PhonebookForm onSubmit={onSubmit} />
-        </PhonebookContainer>
-        <ContactsContainer>
-          <ContactsTitle>Contacts</ContactsTitle>
-          <ContactsFilter value={filter} handleChange={handleChange} />
-          <ContactsList
-            contacts={getFilteredContacts()}
-            handleDeleteClick={handleDeleteClick}
-          />
-        </ContactsContainer>
-      </div>
+  const getFilteredContacts = () => {
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase())
     );
   };
+
+  const handleDeleteClick = deletedId => {
+    setContacts(prevState =>
+      prevState.contacts.filter(({ id }) => id !== deletedId)
+    );
+  };
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        marginLeft: 20,
+        fontSize: 30,
+        color: '#010101',
+      }}
+    >
+      <PhonebookContainer>
+        <PhonebookTitle>Phonebook</PhonebookTitle>
+        <PhonebookForm onSubmit={onSubmit} />
+      </PhonebookContainer>
+      <ContactsContainer>
+        <ContactsTitle>Contacts</ContactsTitle>
+        <ContactsFilter value={filter} handleChange={handleChange} />
+        <ContactsList
+          contacts={getFilteredContacts()}
+          handleDeleteClick={handleDeleteClick}
+        />
+      </ContactsContainer>
+    </div>
+  );
 };
 
 export default App;
