@@ -27,11 +27,9 @@ const App = () => {
         ? JSON.parse(localStorage.getItem('contact'))
         : contact
     );
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('contact', JSON.stringify(contacts));
-  }, [contacts]);
+    console.log('gets item');
+  }, []);
 
   const onSubmit = contact => {
     const duplicate = contacts.find(
@@ -47,7 +45,12 @@ const App = () => {
       id: nanoid(),
     };
 
-    setContacts(contacts => [...contacts, newContact]);
+    setContacts(contacts => {
+      const newContacts = [...contacts, newContact];
+
+      localStorage.setItem('contact', JSON.stringify(newContacts));
+      return newContacts;
+    });
   };
 
   const handleChange = value => {
@@ -55,15 +58,20 @@ const App = () => {
   };
 
   const getFilteredContacts = () => {
+    console.log(filter);
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
   const handleDeleteClick = deletedId => {
-    setContacts(prevState =>
-      prevState.contacts.filter(({ id }) => id !== deletedId)
-    );
+    console.log(contacts);
+
+    setContacts(prevState => {
+      const newFilter = prevState.filter(({ id }) => id !== deletedId);
+      localStorage.setItem('contact', JSON.stringify(newFilter));
+      return newFilter;
+    });
   };
 
   return (

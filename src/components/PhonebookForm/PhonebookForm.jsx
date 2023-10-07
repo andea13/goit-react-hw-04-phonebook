@@ -35,8 +35,7 @@ const PhonebookForm = ({ onSubmit }) => {
   };
 
   const reset = () => {
-    setContactName('');
-    setNumber('');
+    setInputs({});
   };
 
   return (
