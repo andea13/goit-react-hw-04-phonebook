@@ -3,22 +3,12 @@ import PropTypes from 'prop-types';
 import { Form, FormLabel, FormInput, FormButton } from './PhonebookForm.styled';
 
 const PhonebookForm = ({ onSubmit }) => {
-  const [contactName, setContactName] = useState('');
-  const [number, setNumber] = useState('');
   const [inputs, setInputs] = useState({});
-  // const [name, setName]=useState('')
 
   const handleChange = event => {
     const { name, value } = event.target;
-    console.log(name, value);
 
     setInputs(prevState => ({ ...prevState, [name]: value }));
-
-    // this.setState({
-    //   [name]: value,
-    // });
-
-    // setContactName(value);
   };
 
   const handleSubmit = event => {

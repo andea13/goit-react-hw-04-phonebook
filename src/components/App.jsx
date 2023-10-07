@@ -27,8 +27,6 @@ const App = () => {
         ? JSON.parse(localStorage.getItem('contact'))
         : contact
     );
-
-    console.log('gets item');
   }, []);
 
   const onSubmit = contact => {
@@ -58,15 +56,12 @@ const App = () => {
   };
 
   const getFilteredContacts = () => {
-    console.log(filter);
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
   const handleDeleteClick = deletedId => {
-    console.log(contacts);
-
     setContacts(prevState => {
       const newFilter = prevState.filter(({ id }) => id !== deletedId);
       localStorage.setItem('contact', JSON.stringify(newFilter));
