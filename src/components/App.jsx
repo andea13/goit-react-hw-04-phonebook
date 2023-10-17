@@ -18,16 +18,16 @@ let contact = [
 ];
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(() => {
+    const localStorageContacts = localStorage.getItem('contact');
+    return localStorageContacts ? JSON.parse(localStorageContacts) : contact;
+  });
+
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    setContacts(
-      localStorage.getItem('contact')
-        ? JSON.parse(localStorage.getItem('contact'))
-        : contact
-    );
-  }, []);
+    localStorage.setItem('contact', JSON.stringify(contacts));
+  }, [contacts]);
 
   const onSubmit = contact => {
     const duplicate = contacts.find(
